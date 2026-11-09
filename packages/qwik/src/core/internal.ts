@@ -9,6 +9,7 @@ export {
 export type { QRLInternal as _QRLInternal } from './shared/qrl/qrl-class';
 export { isSyncQrl as _isSyncQrl } from './shared/qrl/qrl-utils';
 export { createQRL as _createQRL } from './shared/qrl/qrl-class';
+export { coreQrls as _coreQrls, _setCoreQrls } from './shared/qrl/core-qrls';
 export { qrlToString as _qrlToString } from './shared/serdes/qrl-to-string';
 // ^ keep this above to avoid circular dependency issues
 

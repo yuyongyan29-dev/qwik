@@ -1,11 +1,10 @@
 import type { OnRenderFn } from '../component.public';
-import { createQRL } from '../qrl/qrl-class';
+import { coreQrls } from '../qrl/core-qrls';
 import type { QRLInternal } from '../qrl/qrl-class';
 import { jsxEventToHtmlAttribute, normalizeJsxEventName } from '../utils/event-names';
 import { logOnceWarn } from '../utils/log';
 import type { OnRenderProp, QSlot, QSlotS, QScopedStyle, ELEMENT_ID } from '../utils/markers';
 import { qDev } from '../utils/qdev';
-import { _chk, _val } from './bind-handlers';
 import { JSXNodeImpl, mergeHandlers } from './jsx-node';
 import { type Props, jsx } from './jsx-runtime';
 import type { DevJSX, JSXNodeInternal, FunctionComponent } from './types/jsx-node';
@@ -273,7 +272,7 @@ export const _jsxSplit = <T extends string | FunctionComponent<any>>(
           delete constProps[BIND_CHECKED];
         }
         varProps.checked = bindCheckedSignal;
-        const handler = createQRL(null, '_chk', _chk, null, [bindCheckedSignal]);
+        const handler = coreQrls.chk.w([bindCheckedSignal]);
 
         // Move q-e:input from constProps if it exists
         if (constProps && _hasOwnProperty.call(constProps, 'q-e:input')) {
@@ -300,7 +299,7 @@ export const _jsxSplit = <T extends string | FunctionComponent<any>>(
           delete constProps[BIND_VALUE];
         }
         varProps.value = bindValueSignal;
-        const handler = createQRL(null, '_val', _val, null, [bindValueSignal]);
+        const handler = coreQrls.val.w([bindValueSignal]);
 
         // Move q-e:input from constProps if it exists
         if (constProps && _hasOwnProperty.call(constProps, 'q-e:input')) {

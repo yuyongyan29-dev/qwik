@@ -1,6 +1,6 @@
 import type { JSXOutput, QRL } from '@qwik.dev/core';
 import { describe, expectTypeOf, test } from 'vitest';
-import { Show } from './show';
+import { Show } from '../qwik-lib';
 
 describe('Show types', () => {
   test('accepts plain when$ and branch functions', () => () => {

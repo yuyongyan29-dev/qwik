@@ -355,7 +355,7 @@
       ],
       "kind": "Variable",
       "content": "Renders `fallback$` instead of its children when a descendant throws.\n\n\n```typescript\nCatch: Component<CatchProps>\n```",
-      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/shared/error/catch.ts",
+      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/qwik-lib.ts",
       "mdFile": "core.catch.md"
     },
     {
@@ -697,7 +697,7 @@
       ],
       "kind": "Variable",
       "content": "```typescript\nEach: EachComponent\n```",
-      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/control-flow/each.ts",
+      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/qwik-lib.ts",
       "mdFile": "core.each.md"
     },
     {
@@ -1410,7 +1410,7 @@
       ],
       "kind": "Variable",
       "content": "```typescript\nPending: Component<PendingProps>\n```",
-      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/control-flow/pending.tsx",
+      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/qwik-lib.ts",
       "mdFile": "core.pending.md"
     },
     {
@@ -2171,8 +2171,8 @@
         }
       ],
       "kind": "Variable",
-      "content": "```typescript\nReveal: typeof revealCmp\n```",
-      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/control-flow/reveal.tsx",
+      "content": "```typescript\nReveal: typeof revealComponent\n```",
+      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/qwik-lib.ts",
       "mdFile": "core.reveal.md"
     },
     {
@@ -2256,7 +2256,7 @@
       ],
       "kind": "Variable",
       "content": "```typescript\nShow: ShowComponent\n```",
-      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/control-flow/show.ts",
+      "editUrl": "https://github.com/QwikDev/qwik/tree/main/packages/qwik/src/core/qwik-lib.ts",
       "mdFile": "core.show.md"
     },
     {

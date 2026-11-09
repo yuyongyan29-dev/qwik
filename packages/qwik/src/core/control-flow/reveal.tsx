@@ -2,11 +2,10 @@ import { isBrowser } from '@qwik.dev/core/build';
 import { qTest } from '../shared/utils/qdev';
 import type { Signal } from '../reactive-primitives/signal.public';
 import { createSignal } from '../reactive-primitives/signal.public';
-import { componentQrl } from '../shared/component.public';
 import { _jsxSorted } from '../shared/jsx/jsx-internal';
 import { Slot } from '../shared/jsx/slot.public';
 import { isServerPlatform } from '../shared/platform/platform';
-import { inlinedQrl } from '../shared/qrl/qrl';
+import { coreQrls } from '../shared/qrl/core-qrls';
 import { _capturesObj } from '../shared/qrl/qrl-class';
 import { noSerialize, type NoSerialize } from '../shared/serdes/verify';
 import { canRevealRegistration, type RevealOrder } from '../shared/utils/reveal';
@@ -102,7 +101,7 @@ export const useRevealBoundary = (boundary: CursorBoundary): RevealRegistration 
   });
 
   if (registration !== null) {
-    useTaskQrl(/*#__PURE__*/ inlinedQrl(revealCleanupTask, '_reT', [registration]), {
+    useTaskQrl(coreQrls.reT.w([registration]), {
       deferUpdates: false,
     });
   }
@@ -153,11 +152,6 @@ export const revealCmp = (props: RevealProps) => {
 
   return /*#__PURE__*/ _jsxSorted(Slot, null, null, null, 0, 'u7_0');
 };
-
-/** @public @experimental */
-export const Reveal = /*#__PURE__*/ componentQrl<RevealProps>(
-  /*#__PURE__*/ inlinedQrl(revealCmp, '_reC')
-) as typeof revealCmp;
 
 type SSRRevealSlotProps = {
   coordinator: OutOfOrderRevealCoordinator;

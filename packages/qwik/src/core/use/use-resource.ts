@@ -10,7 +10,7 @@ import {
 import type { ComputeCtx } from '../reactive-primitives/types';
 import { StoreFlags } from '../reactive-primitives/types';
 import type { JSXOutput } from '../shared/jsx/types/jsx-node';
-import { createQRL } from '../shared/qrl/qrl-class';
+import { coreQrls } from '../shared/qrl/core-qrls';
 import { assertQrl } from '../shared/qrl/qrl-utils';
 import { type QRL } from '../shared/qrl/qrl.public';
 import { isPromise } from '../shared/utils/promises';
@@ -103,7 +103,7 @@ export const useResourceQrl = <T>(
 
   const ref = {} as { r: T };
   // Wrap the function so we can maintain a stable reference to the store
-  const wrapped = createQRL(null, '_rsc', _rsc, null, [qrl, ref], iCtx.$container$);
+  const wrapped = coreQrls.rsc.w([qrl, ref]);
   const asyncSignal = createAsyncQrl<{ r: T }>(wrapped as any, {
     timeout: opts?.timeout,
     container: iCtx.$container$,

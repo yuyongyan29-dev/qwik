@@ -337,6 +337,11 @@ export interface CorePlatform {
     raf: (fn: () => any) => Promise<any>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "CoreQrls" needs to be exported by the entry point index.d.ts
+//
+// @internal (undocumented)
+export const _coreQrls: CoreQrls;
+
 // @public
 export interface CorrectedToggleEvent extends Event {
     // (undocumented)
@@ -1350,6 +1355,9 @@ export class _SerializerSignalImpl<T, S> extends _ComputedSignalImpl<T> {
 
 // @public
 export const SerializerSymbol: unique symbol;
+
+// @internal (undocumented)
+export const _setCoreQrls: (qrls: Record<keyof CoreQrls, QRL<any>>) => void;
 
 // @internal (undocumented)
 export const _setDomRefCheck: (check: (obj: unknown) => boolean) => void;

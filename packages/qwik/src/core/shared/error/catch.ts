@@ -1,11 +1,10 @@
 import { isBrowser, isDev } from '@qwik.dev/core/build';
 import { useCatchStore } from '../../use/use-catch-store';
-import { componentQrl, type Component } from '../component.public';
 import { _jsxSorted } from '../jsx/jsx-internal';
 import { Slot } from '../jsx/slot.public';
 import type { JSXOutput } from '../jsx/types/jsx-node';
 import { isServerPlatform } from '../platform/platform';
-import { inlinedQrl } from '../qrl/qrl';
+import { coreQrls } from '../qrl/core-qrls';
 import type { QRL } from '../qrl/qrl.public';
 import { noSerialize } from '../serdes/verify';
 import {
@@ -35,7 +34,6 @@ import { ChoreBits } from '../vnode/enums/chore-bits.enum';
 import { markVNodeDirty } from '../vnode/vnode-dirty';
 import {
   ERROR_CONTEXT,
-  CATCH_QRL_SYMBOL,
   getOwnCatchStore,
   isErrorFromDeferredSegment,
   markBoundaryErrored,
@@ -212,7 +210,7 @@ export const catchCmp = (props: CatchProps): JSXOutput => {
     return /*#__PURE__*/ _jsxSorted(Slot, null, null, null, 0, null);
   }
 
-  const reset = /*#__PURE__*/ inlinedQrl(catchReset, '_caR', [invokeCtx?.$hostElement$]);
+  const reset = coreQrls.caR.w([invokeCtx?.$hostElement$]);
   if (isServerEnv) {
     const fallbackQrl = props.fallback$;
     store.$fallback$ = noSerialize((error: unknown) => fallbackQrl(error as Error, reset));
@@ -235,11 +233,6 @@ export const catchCmp = (props: CatchProps): JSXOutput => {
     null
   );
 };
-
-/** Renders `fallback$` instead of its children when a descendant throws. @public @experimental */
-export const Catch: Component<CatchProps> = /*#__PURE__*/ componentQrl<CatchProps>(
-  /*#__PURE__*/ inlinedQrl(catchCmp, CATCH_QRL_SYMBOL)
-);
 
 type SSRErrorFallbackProps = {
   boundaryId: number;

@@ -21,6 +21,8 @@ Use that style for core work. Avoid broad rewrites, unexplained fallbacks, and t
 
 ```text
 packages/qwik/src/core/
+  runtime.ts                  runtime entry, built to `dist/core.mjs` (`@qwik.dev/core/internal`)
+  index.ts, qwik-lib.ts       library entry, built to `dist/index.qwik.mjs` (`@qwik.dev/core`)
   client/                     client render, VNode materialization, cursor/diff integration
   reactive-primitives/         signals, async signals, stores, subscriptions
   shared/qrl/                  QRL classes and helpers
@@ -221,6 +223,17 @@ Out-of-order (OOOS) invariants:
   render-varying value in the const bag (see the optimizer skill's "Const prop bag").
 - For event or JSX attribute changes, keep `event-names`, JSX runtime, qwikloader, and optimizer
   behavior aligned.
+- Core's own QRLs (event wrapper, bind handlers, visible tasks, control-flow components and tasks)
+  are `inlinedQrl()` calls in `core/qwik-lib.ts`, which ships as `index.qwik.mjs` so the app's
+  optimizer splits them into segments. Runtime code creates them with `coreQrls.<role>.w([...])`,
+  never `createQRL(null, '_x', fn)`: a QRL the optimizer never saw has no chunk in the manifest or
+  dev URL. Match core QRLs by hash (`isCoreQrl`, `$hash$`), not symbol name, because prod renames
+  `q_run` to `s_run`.
+- `qwik-lib.ts` may import values only from `@qwik.dev/core/internal` (the core build fails
+  otherwise). The optimizer hoists every QRL to module top as a `qrl()` call, so this module must
+  evaluate after the runtime it calls into; inside the runtime bundle that call would hit a TDZ. Give
+  each QRL a symbol
+  name different from its local function name, or the dev segment redeclares it.
 
 ## Focused Verification
 

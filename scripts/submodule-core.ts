@@ -1,5 +1,5 @@
 import { build, type BuildOptions } from 'esbuild';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { type InputOptions, type OutputOptions, rollup } from 'rollup';
 import { minify } from 'terser';
 import {
@@ -53,6 +53,7 @@ export async function submoduleCore(config: BuildConfig): Promise<object | undef
     join(config.dtsDir, 'packages/qwik/src/core/shared/platform/async-local-storage.d.ts'),
     join(config.distQwikPkgDir, 'async-local-storage.d.ts')
   );
+  await submoduleCoreLib(config);
 
   if (config.dev) {
     await submoduleCoreDev(config);
@@ -63,7 +64,7 @@ export async function submoduleCore(config: BuildConfig): Promise<object | undef
 
 async function submoduleCoreProd(config: BuildConfig): Promise<object | undefined> {
   const input: InputOptions = {
-    input: join(config.tscDir, 'packages', 'qwik', 'src', 'core', 'index.js'),
+    input: join(config.tscDir, 'packages', 'qwik', 'src', 'core', 'runtime.js'),
     onwarn: rollupOnWarn,
     external: [
       '@qwik.dev/core/build',
@@ -377,12 +378,52 @@ function validateNoHmrReferences(code: string, filename: string) {
   }
 }
 
+/**
+ * Builds `index.qwik.mjs`, the `@qwik.dev/core` entry: the runtime re-exported from
+ * `@qwik.dev/core/internal`, plus the library layer (`core/qwik-lib.ts`) that the app's optimizer
+ * splits into segments, like any Qwik library.
+ */
+async function submoduleCoreLib(config: BuildConfig) {
+  const coreDir = join(config.srcQwikDir, 'core');
+  const result = await build({
+    entryPoints: [join(coreDir, 'index.ts')],
+    metafile: true,
+    outfile: join(config.distQwikPkgDir, 'index.qwik.mjs'),
+    bundle: true,
+    format: 'esm',
+    target,
+    banner: { js: getBanner('@qwik.dev/core', config.distVersion) },
+    plugins: [
+      {
+        name: 'coreLibImports',
+        setup(b) {
+          b.onResolve({ filter: /^@qwik\.dev\/core/ }, (args) => ({
+            path: args.path,
+            external: true,
+          }));
+          b.onResolve({ filter: /^\.\/runtime$/ }, () => ({
+            path: '@qwik.dev/core/internal',
+            external: true,
+          }));
+        },
+      },
+    ],
+  });
+  // Bundling any other module would ship a second copy of the runtime.
+  const bundled = Object.keys(result.metafile.inputs).map((input) => basename(input));
+  if (bundled.some((name) => name !== 'index.ts' && name !== 'qwik-lib.ts')) {
+    throw new Error(
+      `"index.qwik.mjs" may only import values from "@qwik.dev/core/internal", but bundled: ${bundled.join(', ')}`
+    );
+  }
+  console.log('📚 index.qwik.mjs:', await fileSize(join(config.distQwikPkgDir, 'index.qwik.mjs')));
+}
+
 async function submoduleCoreDev(config: BuildConfig) {
   const submodule = 'core';
 
   const opts: BuildOptions = {
-    entryPoints: [join(config.srcQwikDir, submodule, 'index.ts')],
-    entryNames: submodule,
+    entryPoints: { [submodule]: join(config.srcQwikDir, submodule, 'runtime.ts') },
     outdir: config.distQwikPkgDir,
     bundle: true,
     sourcemap: 'external',

@@ -8,7 +8,7 @@ import qCoreMjs from '../../../node_modules/@qwik.dev/core/dist/core.mjs?raw-sou
 import qAsyncLocalStorageMjs from '../../../node_modules/@qwik.dev/core/dist/async-local-storage.mjs?raw-source';
 import qViteMjs from '../../../node_modules/@qwik.dev/core/dist/optimizer.mjs?raw-source';
 import qPreloaderMjs from '../../../node_modules/@qwik.dev/core/dist/preloader.mjs?raw-source';
-import qHandlersMjs from '../../../node_modules/@qwik.dev/core/handlers.mjs?raw-source';
+import qIndexQwikMjs from '../../../node_modules/@qwik.dev/core/dist/index.qwik.mjs?raw-source';
 import qWorkerMjs from '../../../node_modules/@qwik.dev/core/dist/worker/index.mjs?raw-source';
 import qWorkerJs from '../../../node_modules/@qwik.dev/core/dist/worker/worker.js?raw-source';
 import qWorkerNodeJs from '../../../node_modules/@qwik.dev/core/dist/worker/worker.node.js?raw-source';
@@ -79,7 +79,7 @@ const qwikUrls: PkgUrls[string] = {
   '/dist/worker/worker.shared.js': qWorkerSharedJs,
   '/dist/qwikloader.js': qQwikLoaderJs,
   '/dist/ts-optimizer.mjs': qTsOptimizerMjs,
-  '/handlers.mjs': qHandlersMjs,
+  '/dist/index.qwik.mjs': qIndexQwikMjs,
 };
 export const bundled: PkgUrls = {
   [QWIK_PKG_NAME_V1]: qwikUrls,

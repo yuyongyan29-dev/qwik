@@ -1,6 +1,6 @@
 import type { JSXOutput } from '@qwik.dev/core';
 import { describe, expectTypeOf, test } from 'vitest';
-import { Each } from './each';
+import { Each } from '../qwik-lib';
 
 describe('Each types', () => {
   test('infers item$ params and return type', () => () => {

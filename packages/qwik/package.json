@@ -39,17 +39,11 @@
   "exports": {
     ".": {
       "types": "./public.d.ts",
-      "import": {
-        "development": "./dist/core.mjs",
-        "production": "./dist/core.prod.mjs",
-        "min": "./dist/core.min.mjs",
-        "default": "./dist/core.prod.mjs"
-      }
+      "import": "./dist/index.qwik.mjs"
     },
     "./cli": {
       "require": "./dist/cli.mjs"
     },
-    "./handlers.mjs": "./handlers.mjs",
     "./internal": {
       "types": "./dist/core-internal.d.ts",
       "import": {
@@ -150,7 +144,6 @@
     "dist",
     "build.d.ts",
     "cli.d.ts",
-    "handlers.mjs",
     "jsx-dev-runtime.d.ts",
     "jsx-runtime.d.ts",
     "loader.d.ts",
@@ -207,6 +200,7 @@
     "build.insights": "cd src/insights && vite build --mode lib --emptyOutDir"
   },
   "sideEffects": [
+    "./dist/index.qwik.mjs",
     "./src/core/shared/duplicate-core.ts",
     "./src/testing/vdom-diff.unit-util.ts",
     "./src/testing/mocks.ts"

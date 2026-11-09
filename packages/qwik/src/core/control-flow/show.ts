@@ -1,11 +1,10 @@
 import { isServer } from '@qwik.dev/core/build';
 import type { PublicProps } from '../shared/component.public';
-import { componentQrl } from '../shared/component.public';
 import { setNodeDiffPayload } from '../shared/cursor/chore-execution';
 import type { DevJSX, JSXOutput } from '../shared/jsx/types/jsx-node';
 import { SkipRender } from '../shared/jsx/utils.public';
 import { isServerPlatform } from '../shared/platform/platform';
-import { inlinedQrl } from '../shared/qrl/qrl';
+import { coreQrls } from '../shared/qrl/core-qrls';
 import { _capturesObj, type QRLInternal } from '../shared/qrl/qrl-class';
 import type { QRL } from '../shared/qrl/qrl.public';
 import { isQrl } from '../shared/qrl/qrl-utils';
@@ -85,11 +84,6 @@ export const showCmp = (props: ShowProps<any>) => {
       'Show is experimental and must be enabled with `experimental: ["show"]` in the `qwikVite` plugin.'
     );
   }
-  useTaskQrl(/*#__PURE__*/ inlinedQrl(showCmpTask, '_shT', [props]));
+  useTaskQrl(coreQrls.shT.w([props]));
   return SkipRender;
 };
-
-/** @public @experimental */
-export const Show = /*#__PURE__*/ componentQrl<ShowProps<any>>(
-  /*#__PURE__*/ inlinedQrl(showCmp, '_shC')
-) as ShowComponent;

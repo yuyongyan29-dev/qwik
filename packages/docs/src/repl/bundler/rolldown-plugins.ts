@@ -92,6 +92,10 @@ export const replResolver = (
         if (pkgName === '/build') {
           return `/qwik/build`;
         }
+        // Published versions before the core library entry still enter through core.mjs.
+        if (!pkgName && deps[QWIK_PKG_NAME_V1]['/dist/index.qwik.mjs']) {
+          return resolveQwik('/dist/index.qwik.mjs');
+        }
         if (
           !pkgName ||
           pkgName === '/jsx-runtime' ||

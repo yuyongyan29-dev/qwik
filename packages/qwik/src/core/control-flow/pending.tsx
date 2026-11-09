@@ -1,13 +1,12 @@
 import { isBrowser } from '@qwik.dev/core/build';
 import { qTest } from '../shared/utils/qdev';
 import type { Signal } from '../reactive-primitives/signal.public';
-import { componentQrl, type Component } from '../shared/component.public';
 import { _jsxSorted } from '../shared/jsx/jsx-internal';
 import { Slot } from '../shared/jsx/slot.public';
 import type { JSXNodeInternal, JSXOutput } from '../shared/jsx/types/jsx-node';
 import { isServerPlatform } from '../shared/platform/platform';
 import { _fnSignal } from '../shared/qrl/inlined-fn';
-import { inlinedQrl } from '../shared/qrl/qrl';
+import { coreQrls } from '../shared/qrl/core-qrls';
 import type { QRL } from '../shared/qrl/qrl.public';
 import { _capturesObj, type QRLInternal } from '../shared/qrl/qrl-class';
 import {
@@ -26,11 +25,10 @@ import { tryGetInvokeContext, untrack } from '../use/use-core';
 import { useCursorBoundary, type CursorBoundary } from '../use/use-cursor-boundary';
 import { useSignal } from '../use/use-signal';
 import { useTaskQrl, type TaskCtx } from '../use/use-task';
-import { revealCanReveal, useRevealBoundary, type RevealRegistration } from './reveal';
+import { useRevealBoundary, type RevealRegistration } from './reveal';
 import {
   isOutOfOrderStreaming,
   nextOutOfOrderPendingId,
-  PENDING_QRL_SYMBOL,
   type OutOfOrderRevealBoundary,
 } from './pending-utils';
 
@@ -100,18 +98,9 @@ export const pendingCmp = (props: PendingProps): JSXNodeInternal<string>[] => {
   const state = useSignal<PendingState>('content');
   const cursorBoundary = useCursorBoundary();
   const revealRegistration = useRevealBoundary(cursorBoundary);
-  const canReveal = useComputedQrl(
-    /*#__PURE__*/ inlinedQrl(revealCanReveal, '_reR', [revealRegistration])
-  );
+  const canReveal = useComputedQrl(coreQrls.reR.w([revealRegistration]));
 
-  useTaskQrl(
-    /*#__PURE__*/ inlinedQrl(pendingTask, '_peT', [
-      cursorBoundary,
-      props,
-      state,
-      revealRegistration,
-    ])
-  );
+  useTaskQrl(coreQrls.peT.w([cursorBoundary, props, state, revealRegistration]));
 
   const isServerEnv = qTest ? isServerPlatform() : !isBrowser;
   // Reconcile restored SSR state when no client work is pending.
@@ -203,11 +192,6 @@ export const pendingCmp = (props: PendingProps): JSXNodeInternal<string>[] => {
     ),
   ];
 };
-
-/** @public @experimental */
-export const Pending: Component<PendingProps> = /*#__PURE__*/ componentQrl<PendingProps>(
-  /*#__PURE__*/ inlinedQrl(pendingCmp, PENDING_QRL_SYMBOL)
-);
 
 type SSRFallbackProps = {
   boundary: SSROutOfOrderBoundaryState | null;

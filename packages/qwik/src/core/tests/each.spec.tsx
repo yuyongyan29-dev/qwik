@@ -1,7 +1,7 @@
 import { domRender, ssrRenderToDom, trigger } from '@qwik.dev/core/testing';
 import { describe, expect, it } from 'vitest';
 import { component$, Fragment, Fragment as Component, useSignal, useStore } from '@qwik.dev/core';
-import { Each } from '../control-flow/each';
+import { Each } from '../qwik-lib';
 
 const debug = false; //true;
 Error.stackTraceLimit = 100;
